@@ -18,13 +18,18 @@ apt install -y nginx mysql-server git curl
 # ---- 2. Install Go (if not installed) ----
 if ! command -v go &> /dev/null; then
     echo "[2/7] Installing Go..."
-    curl -LO https://go.dev/dl/go1.22.5.linux-amd64.tar.gz
+    curl -LO https://mirrors.aliyun.com/golang/go1.22.5.linux-amd64.tar.gz || \
+    curl -LO https://studygolang.com/dl/golang/go1.22.5.linux-amd64.tar.gz || \
+    curl -LO https://gomirrors.org/dl/go/go1.22.5.linux-amd64.tar.gz
     tar -C /usr/local -xzf go1.22.5.linux-amd64.tar.gz
     echo 'export PATH=$PATH:/usr/local/go/bin' >> /etc/profile
+    echo 'export GOPROXY=https://goproxy.cn,direct' >> /etc/profile
     export PATH=$PATH:/usr/local/go/bin
+    export GOPROXY=https://goproxy.cn,direct
     rm go1.22.5.linux-amd64.tar.gz
 else
     echo "[2/7] Go already installed: $(go version)"
+    export GOPROXY=https://goproxy.cn,direct
 fi
 
 # ---- 3. Install Node.js (if not installed) ----
@@ -72,12 +77,14 @@ REFRESH_SECRET=$(openssl rand -hex 32)
 sed -i "s/bolg-access-secret-change-in-production/$ACCESS_SECRET/" config/config.yaml
 sed -i "s/bolg-refresh-secret-change-in-production/$REFRESH_SECRET/" config/config.yaml
 
+export GOPROXY=https://goproxy.cn,direct
 go build -o bolg-api cmd/server/main.go
 echo "  Go API built."
 
 # Build Next.js admin
 echo "[6/7] Building admin dashboard..."
 cd ../admin
+npm config set registry https://registry.npmmirror.com
 npm install
 npm run build
 echo "  Admin dashboard built."
