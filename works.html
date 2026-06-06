@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Works — Bol G</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg:           #FAF9F7;
+      --color-bg-alt:       #F3F1EE;
+      --color-bg-card:      #FFFFFF;
+      --color-surface:      #F7F6F4;
+      --color-border:       rgba(0,0,0,0.06);
+      --color-border-hover: rgba(0,0,0,0.12);
+      --color-text-primary: #1A1A1A;
+      --color-text-secondary: #6B6B6B;
+      --color-text-tertiary: #9A9A9A;
+      --color-accent:       #2C3E6B;
+      --color-accent-light: rgba(44,62,107,0.08);
+      --color-accent-warm:  #C4884E;
+      --color-accent-warm-light: rgba(196,136,78,0.08);
+      --color-glass:        rgba(250,249,247,0.72);
+      --color-glass-border: rgba(0,0,0,0.05);
+      --color-shadow:       rgba(0,0,0,0.04);
+      --color-shadow-hover: rgba(0,0,0,0.08);
+      --color-overlay:      rgba(0,0,0,0.3);
+      --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-mono:  'JetBrains Mono', 'SF Mono', monospace;
+      --space-xs:  0.25rem; --space-sm:  0.5rem; --space-md:  1rem;
+      --space-lg:  1.5rem; --space-xl:  2rem; --space-2xl: 3rem;
+      --space-3xl: 4rem; --space-4xl: 6rem;
+      --max-width: 1200px; --nav-height: 64px;
+      --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px; --radius-xl: 24px;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --duration-fast: 0.2s; --duration-base: 0.4s; --duration-slow: 0.6s;
+    }
+    [data-theme="dark"] {
+      --color-bg: #0F0F0F; --color-bg-alt: #1A1A1A; --color-bg-card: #1E1E1E;
+      --color-surface: #161616; --color-border: rgba(255,255,255,0.06);
+      --color-border-hover: rgba(255,255,255,0.12);
+      --color-text-primary: #F0EDE8; --color-text-secondary: #8A8A8A; --color-text-tertiary: #5A5A5A;
+      --color-accent: #7B93D4; --color-accent-light: rgba(123,147,212,0.1);
+      --color-accent-warm: #D4A06A; --color-accent-warm-light: rgba(212,160,106,0.1);
+      --color-glass: rgba(15,15,15,0.76); --color-glass-border: rgba(255,255,255,0.06);
+      --color-shadow: rgba(0,0,0,0.2); --color-shadow-hover: rgba(0,0,0,0.35);
+      --color-overlay: rgba(0,0,0,0.6);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; -webkit-font-smoothing:antialiased; }
+    body { font-family:var(--font-sans); background:var(--color-bg); color:var(--color-text-primary); line-height:1.6; }
+    a { color:inherit; text-decoration:none; }
+    img { display:block; max-width:100%; }
+
+    .container { max-width:var(--max-width); margin:0 auto; padding:0 var(--space-xl); }
+
+    /* Navbar */
+    .navbar { position:fixed; top:0; left:0; right:0; height:var(--nav-height); z-index:1000;
+      display:flex; align-items:center; justify-content:space-between; padding:0 var(--space-xl);
+      background:transparent; transition:all var(--duration-base) var(--ease-out); }
+    .navbar.scrolled { background:var(--color-glass); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--color-glass-border); }
+    .nav-brand { font-family:var(--font-serif); font-size:1.2rem; font-weight:600; letter-spacing:-0.02em; }
+    .nav-right { display:flex; align-items:center; gap:var(--space-md); }
+    .nav-icon-btn { width:40px; height:40px; border-radius:50%; border:1px solid var(--color-border);
+      background:var(--color-glass); color:var(--color-text-secondary); cursor:pointer;
+      display:flex; align-items:center; justify-content:center; transition:all var(--duration-fast) var(--ease-out); }
+    .nav-icon-btn:hover { border-color:var(--color-border-hover); color:var(--color-text-primary);
+      background:var(--color-bg-card); }
+    .nav-icon-btn svg { width:18px; height:18px; }
+
+    /* Back link */
+    .back-link { display:inline-flex; align-items:center; gap:var(--space-sm); font-size:0.85rem;
+      color:var(--color-text-secondary); margin-bottom:var(--space-3xl); transition:color var(--duration-fast); }
+    .back-link:hover { color:var(--color-text-primary); }
+    .back-link svg { width:16px; height:16px; }
+
+    /* Page header */
+    .page-header { padding:calc(var(--nav-height) + var(--space-4xl)) 0 var(--space-3xl); }
+    .page-label { font-size:0.72rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase;
+      color:var(--color-accent); margin-bottom:var(--space-sm); }
+    .page-title { font-family:var(--font-serif); font-size:2.8rem; font-weight:600;
+      letter-spacing:-0.02em; line-height:1.15; margin-bottom:var(--space-md); }
+    .page-desc { font-size:1.05rem; color:var(--color-text-secondary); max-width:560px; }
+
+    /* Category section */
+    .cat-section { padding:var(--space-2xl) 0; }
+    .cat-section + .cat-section { border-top:1px solid var(--color-border); }
+    .cat-header { display:flex; align-items:center; gap:var(--space-md); margin-bottom:var(--space-2xl); }
+    .cat-icon { width:40px; height:40px; border-radius:var(--radius-md); display:flex; align-items:center;
+      justify-content:center; color:var(--color-accent); background:var(--color-accent-light); }
+    .cat-icon svg { width:20px; height:20px; }
+    .cat-name { font-family:var(--font-serif); font-size:1.5rem; font-weight:600; }
+    .cat-count { font-size:0.8rem; color:var(--color-text-tertiary); font-family:var(--font-mono); margin-left:auto; }
+
+    /* Works grid */
+    .works-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:var(--space-xl); }
+    .work-card { background:var(--color-bg-card); border:1px solid var(--color-border);
+      border-radius:var(--radius-lg); overflow:hidden; cursor:pointer;
+      transition:all var(--duration-base) var(--ease-out); }
+    .work-card:hover { transform:translateY(-4px); box-shadow:0 16px 40px var(--color-shadow-hover);
+      border-color:var(--color-border-hover); }
+    .work-card-image { width:100%; height:200px; overflow:hidden; position:relative; }
+    .work-card-image-inner { width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+    .work-card-image-inner img { width:100%; height:100%; object-fit:cover; }
+    .work-card-image-inner iframe { width:100%; height:100%; border:none; }
+    .work-card-body { padding:var(--space-lg); }
+    .work-card-meta { display:flex; align-items:center; gap:var(--space-sm); margin-bottom:var(--space-sm);
+      font-size:0.72rem; color:var(--color-text-tertiary); font-family:var(--font-mono); }
+    .work-card-tag { font-weight:600; letter-spacing:0.05em; color:var(--color-accent);
+      background:var(--color-accent-light); padding:2px 8px; border-radius:100px; }
+    .work-card-title { font-family:var(--font-serif); font-size:1.05rem; font-weight:600;
+      line-height:1.35; margin-bottom:var(--space-xs); }
+    .work-card:hover .work-card-title { color:var(--color-accent); }
+    .work-card-excerpt { font-size:0.82rem; color:var(--color-text-secondary); line-height:1.6;
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+
+    /* Empty state */
+    .empty-state { text-align:center; padding:var(--space-4xl) 0; color:var(--color-text-tertiary); }
+
+    /* Footer */
+    .footer { border-top:1px solid var(--color-border); padding:var(--space-2xl) 0; text-align:center; }
+    .footer-text { font-size:0.78rem; color:var(--color-text-tertiary); }
+
+    /* Content Modal */
+    .content-overlay { position:fixed; inset:0; background:var(--color-overlay); z-index:2500;
+      display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none;
+      transition:opacity var(--duration-base) var(--ease-out); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
+    .content-overlay.open { opacity:1; pointer-events:auto; }
+    .content-close { position:fixed; top:16px; right:24px; z-index:2510; width:36px; height:36px;
+      border-radius:50%; border:1px solid var(--color-border); background:var(--color-glass);
+      backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); color:var(--color-text-secondary);
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      transition:all var(--duration-fast) var(--ease-out); opacity:0; transform:scale(0.8); }
+    .content-overlay.open .content-close { opacity:1; transform:scale(1); transition-delay:0.2s; }
+    .content-close:hover { background:var(--color-bg-card); border-color:var(--color-border-hover);
+      color:var(--color-text-primary); transform:scale(1.05) !important; }
+    .content-close svg { width:18px; height:18px; }
+    .content-modal { width:50vw; aspect-ratio:16/9; background:var(--color-bg-card);
+      border-radius:var(--radius-lg); box-shadow:0 24px 80px rgba(0,0,0,0.35);
+      transform:translateY(20px) scale(0.96); transition:transform var(--duration-slow) var(--ease-out);
+      overflow-y:auto; overflow-x:hidden; position:relative; }
+    .content-overlay.open .content-modal { transform:translateY(0) scale(1); }
+    .content-modal::-webkit-scrollbar { width:6px; }
+    .content-modal::-webkit-scrollbar-track { background:transparent; }
+    .content-modal::-webkit-scrollbar-thumb { background:var(--color-border); border-radius:3px; }
+    .content-cover { width:100%; height:45%; min-height:180px; position:relative; overflow:hidden; }
+    .content-cover img { width:100%; height:100%; object-fit:cover; display:block; }
+    .content-cover-gradient { width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+    .content-cover-gradient svg { width:64px; height:64px; opacity:0.1; }
+    .content-cover-fade { position:absolute; bottom:0; left:0; right:0; height:120px;
+      background:linear-gradient(to top, var(--color-bg-card) 0%, transparent 100%); pointer-events:none; }
+    .content-body { padding:0 var(--space-2xl) var(--space-2xl); position:relative; margin-top:-30px; }
+    .content-meta { display:flex; align-items:center; gap:var(--space-md); margin-bottom:var(--space-lg); flex-wrap:wrap; }
+    .content-tag { font-size:0.72rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;
+      color:var(--color-accent); background:var(--color-accent-light); padding:4px 12px; border-radius:100px; }
+    .content-date { font-size:0.82rem; color:var(--color-text-tertiary); font-family:var(--font-mono); }
+    .content-link { display:inline-flex; align-items:center; gap:6px; font-size:0.85rem; font-weight:500;
+      color:var(--color-accent); background:var(--color-accent-light); padding:8px 18px;
+      border-radius:100px; text-decoration:none; margin-bottom:var(--space-xl);
+      transition:all var(--duration-fast) var(--ease-out); }
+    .content-link:hover { background:var(--color-accent); color:#fff; }
+    .content-title { font-family:var(--font-serif); font-size:1.5rem; font-weight:600;
+      line-height:1.25; color:var(--color-text-primary); margin-bottom:var(--space-lg); letter-spacing:-0.01em; }
+    .content-excerpt { font-size:1.05rem; line-height:1.7; color:var(--color-text-secondary);
+      margin-bottom:var(--space-xl); font-style:italic; border-left:3px solid var(--color-accent);
+      padding-left:var(--space-lg); }
+    .content-rich { font-size:0.95rem; line-height:1.85; color:var(--color-text-primary); }
+    .content-rich h1,.content-rich h2,.content-rich h3,.content-rich h4 { font-family:var(--font-serif);
+      margin-top:2em; margin-bottom:0.8em; color:var(--color-text-primary); }
+    .content-rich h2 { font-size:1.5rem; } .content-rich h3 { font-size:1.25rem; }
+    .content-rich p { margin-bottom:1.2em; }
+    .content-rich a { color:var(--color-accent); text-decoration:underline;
+      text-decoration-color:rgba(44,62,107,0.3); text-underline-offset:3px; }
+    .content-rich img { max-width:100%; height:auto; border-radius:var(--radius-md); margin:1.5em 0; }
+    .content-rich blockquote { border-left:3px solid var(--color-accent-warm); padding:var(--space-md) var(--space-lg);
+      margin:1.5em 0; background:var(--color-accent-warm-light); border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+      font-style:italic; color:var(--color-text-secondary); }
+    .content-rich code { font-family:var(--font-mono); font-size:0.88em; background:var(--color-surface);
+      padding:2px 6px; border-radius:4px; border:1px solid var(--color-border); }
+    .content-rich pre { background:var(--color-surface); border:1px solid var(--color-border);
+      border-radius:var(--radius-md); padding:var(--space-lg); overflow-x:auto; margin:1.5em 0; }
+    .content-rich pre code { background:none; border:none; padding:0; font-size:0.85rem; }
+    .content-rich ul,.content-rich ol { padding-left:1.5em; margin-bottom:1.2em; }
+    .content-rich li { margin-bottom:0.4em; }
+    .content-rich hr { border:none; border-top:1px solid var(--color-border); margin:2em 0; }
+    .content-loading { display:flex; align-items:center; justify-content:center; min-height:300px;
+      color:var(--color-text-tertiary); font-size:0.9rem; }
+    .content-loading::after { content:''; width:24px; height:24px; border:2px solid var(--color-border);
+      border-top-color:var(--color-accent); border-radius:50%; animation:spin 0.8s linear infinite; margin-left:var(--space-md); }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    @media (max-width:1024px) { .works-grid { grid-template-columns:repeat(2, 1fr); } }
+    @media (max-width:768px) {
+      .works-grid { grid-template-columns:1fr; }
+      .page-title { font-size:2rem; }
+      .content-modal { width:90vw; }
+      .content-body { padding:0 var(--space-lg) var(--space-xl); }
+      .content-title { font-size:1.25rem; }
+      .content-close { top:12px; right:12px; }
+    }
+    @media (max-width:480px) { .content-modal { width:96vw; } }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <a href="/" class="nav-brand">Bol G</a>
+    <div class="nav-right">
+      <button class="nav-icon-btn" id="themeToggle" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <a href="https://github.com/Quirt-studio" target="_blank" rel="noopener" class="nav-icon-btn" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+      </a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <header class="page-header">
+      <a href="/" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        <span data-i18n="works.back">Back to Home</span>
+      </a>
+      <div class="page-label" data-i18n="works.label">Portfolio</div>
+      <h1 class="page-title" data-i18n="works.pageTitle">All Works</h1>
+      <p class="page-desc" data-i18n="works.pageDesc">Browse all projects and creative works across every category.</p>
+    </header>
+
+    <div id="worksContent">
+      <div class="empty-state" data-i18n="works.loading">Loading works...</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-text">&copy; 2026 Bol G. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Content Modal -->
+  <div class="content-overlay" id="contentOverlay">
+    <button class="content-close" id="contentClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="content-modal" id="contentModal"></div>
+  </div>
+
+  <script>
+    var API_BASE = 'http://localhost:8080/api/v1';
+    var currentLang = localStorage.getItem('lang') || 'en';
+    var allWorks = [];
+    var allCategories = [];
+
+    // Theme
+    var html = document.documentElement;
+    var themeToggle = document.getElementById('themeToggle');
+    var iconSun = themeToggle.querySelector('.icon-sun');
+    var iconMoon = themeToggle.querySelector('.icon-moon');
+
+    function setTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      iconSun.style.display = theme === 'dark' ? 'none' : 'block';
+      iconMoon.style.display = theme === 'dark' ? 'block' : 'none';
+    }
+    var savedTheme = localStorage.getItem('theme');
+    if (savedTheme) setTheme(savedTheme);
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme('dark');
+    themeToggle.addEventListener('click', function() { setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); });
+
+    // Navbar scroll
+    var navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', function() {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+    // i18n
+    var i18n = {
+      en: { 'works.back':'Back to Home', 'works.label':'Portfolio', 'works.pageTitle':'All Works',
+        'works.pageDesc':'Browse all projects and creative works across every category.', 'works.loading':'Loading works...',
+        'works.empty':'No works in this category yet.', 'works.all':'All Works' },
+      zh: { 'works.back':'返回首页', 'works.label':'作品集', 'works.pageTitle':'全部作品',
+        'works.pageDesc':'浏览所有分类下的项目与创意作品。', 'works.loading':'加载作品中...',
+        'works.empty':'该分类暂无作品。', 'works.all':'全部作品' }
+    };
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      html.setAttribute('lang', lang === 'zh' ? 'zh-CN' : 'en');
+      var dict = i18n[lang] || i18n.en;
+      document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n');
+        if (dict[key]) el.textContent = dict[key];
+      });
+    }
+    setLang(currentLang);
+
+    // Category icons
+    var categoryIcons = {
+      'development': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
+      'creative': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>',
+      'lifestyle': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C17 5.24 14.76 3 12 3S7 5.24 7 8c0 4 5 9 5 9s5-5 5-9z"/></svg>',
+      'journal': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>'
+    };
+    var defaultGradients = [
+      'linear-gradient(135deg, #1A1A2E 0%, #16213E 50%, #0F3460 100%)',
+      'linear-gradient(135deg, #2D1B69 0%, #11998E 100%)',
+      'linear-gradient(135deg, #434343 0%, #000000 100%)',
+      'linear-gradient(135deg, #4A2C2A 0%, #8B6F4E 100%)',
+      'linear-gradient(135deg, #1B2838 0%, #2A4858 100%)'
+    ];
+
+    function escapeHtml(t) { if(!t) return ''; var d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
+    function escapeAttr(t) { if(!t) return ''; return t.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    function renderWorkCard(work, i) {
+      var catName = work.category ? work.category.name : '';
+      var dateStr = work.date ? work.date.replace(/-/g, '.') : '';
+      var mediaContent = '';
+      if (work.video_url) {
+        if (work.video_url.indexOf('bilibili.com') !== -1) {
+          var bvMatch = work.video_url.match(/BV[\w]+/);
+          if (bvMatch) mediaContent = '<iframe src="//player.bilibili.com/player.html?bvid=' + bvMatch[0] + '&high_quality=1" style="width:100%;height:100%;border:none;" allowfullscreen></iframe>';
+        } else if (work.video_url.indexOf('youtube.com') !== -1 || work.video_url.indexOf('youtu.be') !== -1) {
+          var ytId = work.video_url.indexOf('youtu.be') !== -1 ? work.video_url.split('/').pop().split('?')[0] : (work.video_url.match(/[?&]v=([^&]+)/) || [])[1];
+          if (ytId) mediaContent = '<iframe src="https://www.youtube.com/embed/' + ytId + '" style="width:100%;height:100%;border:none;" allowfullscreen></iframe>';
+        }
+      }
+      if (!mediaContent && work.cover_image_url) {
+        var imgUrl = work.cover_image_url.startsWith('http') ? work.cover_image_url : API_BASE.replace('/api/v1', '') + work.cover_image_url;
+        mediaContent = '<img src="' + escapeAttr(imgUrl) + '" alt="' + escapeHtml(work.title) + '" loading="lazy">';
+      }
+      var gradient = !mediaContent ? (work.gradient || defaultGradients[i % defaultGradients.length]) : null;
+      var imageStyle = mediaContent ? '' : (gradient ? 'background:' + gradient + ';display:flex;align-items:center;justify-content:center;' : 'background:var(--color-bg-alt);');
+      var placeholder = (!mediaContent && gradient) ? '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>' : '';
+
+      return '<div class="work-card" data-slug="' + escapeAttr(work.slug) + '">' +
+        '<div class="work-card-image"><div class="work-card-image-inner" style="' + imageStyle + '">' + (mediaContent || placeholder) + '</div></div>' +
+        '<div class="work-card-body">' +
+          '<div class="work-card-meta">' +
+            (catName ? '<span class="work-card-tag">' + escapeHtml(catName) + '</span>' : '') +
+            '<span>' + escapeHtml(dateStr) + '</span>' +
+          '</div>' +
+          '<h3 class="work-card-title">' + escapeHtml(work.title) + '</h3>' +
+          '<p class="work-card-excerpt">' + escapeHtml(work.excerpt) + '</p>' +
+        '</div>' +
+      '</div>';
+    }
+
+    function renderAllWorks(works, categories) {
+      var container = document.getElementById('worksContent');
+      if (!works.length) {
+        container.innerHTML = '<div class="empty-state">' + (i18n[currentLang] || i18n.en)['works.empty'] + '</div>';
+        return;
+      }
+
+      // Group works by category
+      var grouped = {};
+      var uncategorized = [];
+      works.forEach(function(w) {
+        if (w.category && w.category.slug) {
+          if (!grouped[w.category.slug]) grouped[w.category.slug] = { cat: w.category, works: [] };
+          grouped[w.category.slug].works.push(w);
+        } else {
+          uncategorized.push(w);
+        }
+      });
+
+      var html = '';
+      // Render each category group
+      categories.forEach(function(cat) {
+        var group = grouped[cat.slug];
+        if (!group || !group.works.length) return;
+        var icon = categoryIcons[cat.slug] || categoryIcons['development'];
+        html += '<section class="cat-section">' +
+          '<div class="cat-header">' +
+            '<div class="cat-icon">' + icon + '</div>' +
+            '<h2 class="cat-name">' + escapeHtml(cat.name) + '</h2>' +
+            '<span class="cat-count">' + group.works.length + '</span>' +
+          '</div>' +
+          '<div class="works-grid">' +
+            group.works.map(function(w, i) { return renderWorkCard(w, i); }).join('') +
+          '</div>' +
+        '</section>';
+      });
+
+      // Uncategorized
+      if (uncategorized.length) {
+        html += '<section class="cat-section">' +
+          '<div class="cat-header">' +
+            '<div class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>' +
+            '<h2 class="cat-name">' + (currentLang === 'zh' ? '其他' : 'Other') + '</h2>' +
+            '<span class="cat-count">' + uncategorized.length + '</span>' +
+          '</div>' +
+          '<div class="works-grid">' +
+            uncategorized.map(function(w, i) { return renderWorkCard(w, i); }).join('') +
+          '</div>' +
+        '</section>';
+      }
+
+      container.innerHTML = html;
+    }
+
+    // Fetch data
+    function fetchData() {
+      Promise.all([
+        fetch(API_BASE + '/public/categories?lang=' + currentLang).then(function(r) { return r.json(); }),
+        fetch(API_BASE + '/public/works?lang=' + currentLang + '&limit=100').then(function(r) { return r.json(); })
+      ]).then(function(results) {
+        allCategories = (results[0].code === 0) ? results[0].data : [];
+        allWorks = (results[1].code === 0) ? results[1].data.items || [] : [];
+        renderAllWorks(allWorks, allCategories);
+      }).catch(function() {
+        document.getElementById('worksContent').innerHTML = '<div class="empty-state">Failed to load data.</div>';
+      });
+    }
+    fetchData();
+
+    // Content Modal
+    var contentOverlay = document.getElementById('contentOverlay');
+    var contentModal = document.getElementById('contentModal');
+    var contentCloseBtn = document.getElementById('contentClose');
+    var contentFetchAbort = null;
+
+    function openContent() { contentOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeContent() {
+      contentOverlay.classList.remove('open'); document.body.style.overflow = '';
+      if (contentFetchAbort) { contentFetchAbort.abort(); contentFetchAbort = null; }
+    }
+    contentCloseBtn.addEventListener('click', closeContent);
+    contentOverlay.addEventListener('click', function(e) { if (e.target === contentOverlay) closeContent(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeContent(); });
+
+    function openWork(slug) {
+      openContent();
+      contentModal.innerHTML = '<div class="content-loading">Loading</div>';
+      if (contentFetchAbort) contentFetchAbort.abort();
+      contentFetchAbort = new AbortController();
+      fetch(API_BASE + '/public/works/' + encodeURIComponent(slug) + '?lang=' + currentLang, { signal: contentFetchAbort.signal })
+        .then(function(r) { return r.json(); })
+        .then(function(json) {
+          if (json.code !== 0) throw new Error(json.message);
+          renderContentModal(json.data);
+        })
+        .catch(function(err) {
+          if (err.name === 'AbortError') return;
+          contentModal.innerHTML = '<div class="content-loading" style="color:var(--color-text-tertiary);">Failed to load content.</div>';
+        });
+    }
+
+    function renderContentModal(item) {
+      var title = item.title || '';
+      var excerpt = item.excerpt || '';
+      var content = item.content || '';
+      if (!title && item.translations) {
+        var tr = item.translations[currentLang] || item.translations.en || {};
+        title = tr.title || ''; excerpt = tr.excerpt || ''; content = tr.content || '';
+      }
+      var coverHtml = '';
+      if (item.video_url) {
+        var videoHtml = '';
+        if (item.video_url.indexOf('bilibili.com') !== -1) {
+          var bvMatch = item.video_url.match(/BV[\w]+/);
+          if (bvMatch) videoHtml = '<iframe src="//player.bilibili.com/player.html?bvid=' + bvMatch[0] + '&high_quality=1" style="width:100%;height:100%;border:none;" allowfullscreen></iframe>';
+        } else if (item.video_url.indexOf('youtube.com') !== -1 || item.video_url.indexOf('youtu.be') !== -1) {
+          var ytId = item.video_url.indexOf('youtu.be') !== -1 ? item.video_url.split('/').pop().split('?')[0] : (item.video_url.match(/[?&]v=([^&]+)/) || [])[1];
+          if (ytId) videoHtml = '<iframe src="https://www.youtube.com/embed/' + ytId + '" style="width:100%;height:100%;border:none;" allowfullscreen></iframe>';
+        }
+        if (videoHtml) coverHtml = '<div class="content-cover">' + videoHtml + '<div class="content-cover-fade"></div></div>';
+      }
+      if (!coverHtml && item.cover_image_url) {
+        var imgUrl = item.cover_image_url.startsWith('http') ? item.cover_image_url : API_BASE.replace('/api/v1', '') + item.cover_image_url;
+        coverHtml = '<div class="content-cover"><img src="' + escapeAttr(imgUrl) + '" alt="' + escapeHtml(title) + '"><div class="content-cover-fade"></div></div>';
+      }
+      if (!coverHtml) {
+        var gradient = item.gradient || defaultGradients[0];
+        coverHtml = '<div class="content-cover"><div class="content-cover-gradient" style="background:' + gradient + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div class="content-cover-fade"></div></div>';
+      }
+      var catName = item.category ? item.category.name : '';
+      var dateStr = item.date ? item.date.replace(/T.*/, '').replace(/-/g, '.') : '';
+      var metaHtml = '<div class="content-meta">';
+      if (catName) metaHtml += '<span class="content-tag">' + escapeHtml(catName) + '</span>';
+      if (dateStr) metaHtml += '<span class="content-date">' + escapeHtml(dateStr) + '</span>';
+      if (item.tags && item.tags.length) item.tags.forEach(function(tag) {
+        metaHtml += '<span class="content-tag" style="background:var(--color-accent-warm-light);color:var(--color-accent-warm);">' + escapeHtml(tag.name) + '</span>';
+      });
+      metaHtml += '</div>';
+      var excerptHtml = excerpt ? '<p class="content-excerpt">' + escapeHtml(excerpt) + '</p>' : '';
+      var linkHtml = item.link ? '<a href="' + escapeAttr(item.link) + '" target="_blank" rel="noopener" class="content-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> ' + (currentLang === 'zh' ? '访问项目' : 'Visit Project') + '</a>' : '';
+      var bodyHtml = content ? '<div class="content-rich">' + content + '</div>' : '';
+      contentModal.innerHTML = coverHtml + '<div class="content-body">' + metaHtml +
+        '<h1 class="content-title">' + escapeHtml(title) + '</h1>' + excerptHtml + linkHtml + bodyHtml + '</div>';
+      contentModal.scrollTop = 0;
+    }
+
+    // Card click delegation
+    document.getElementById('worksContent').addEventListener('click', function(e) {
+      var card = e.target.closest('.work-card');
+      if (!card) return;
+      var slug = card.getAttribute('data-slug');
+      if (slug) openWork(slug);
+    });
+  </script>
+</body>
+</html>

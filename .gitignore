@@ -1,0 +1,26 @@
+# Go
+bolg-api/bolg-api.exe
+bolg-api/tmp/
+*.exe
+
+# Node
+admin/node_modules/
+admin/.next/
+admin/out/
+
+# Uploads (user content)
+bolg-api/uploads/works/*
+bolg-api/uploads/general/*
+bolg-api/uploads/categories/*
+!bolg-api/uploads/.gitkeep
+
+# Config (contains secrets)
+# bolg-api/config/config.yaml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

@@ -1,0 +1,23 @@
+# Binaries
+bin/
+*.exe
+
+# Uploads
+uploads/
+
+# Config with secrets
+config/config.yaml
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Go
+vendor/
+
+# Environment
+.env
