@@ -12,9 +12,10 @@ interface ImageUploadProps {
   onChange: (url: string) => void;
   disabled?: boolean;
   label?: string;
+  folder?: string;
 }
 
-export function ImageUpload({ value, onChange, disabled, label = "Cover Image" }: ImageUploadProps) {
+export function ImageUpload({ value, onChange, disabled, label = "Cover Image", folder = "works" }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -36,7 +37,7 @@ export function ImageUpload({ value, onChange, disabled, label = "Cover Image" }
 
     setUploading(true);
     try {
-      const res = await mediaAPI.upload(file, "works", file.name);
+      const res = await mediaAPI.upload(file, folder, file.name);
       if (res.code === 0 && res.data) {
         onChange(res.data.url);
         toast.success("Image uploaded successfully");

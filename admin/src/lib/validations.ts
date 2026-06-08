@@ -15,22 +15,22 @@ export type TagCategory = string;
 
 export interface WorkFormData {
   title: LocalizedString;
-  tag: LocalizedString;
-  tagCategory: TagCategory;
-  date: string;
-  excerpt: LocalizedString;
+  tag?: LocalizedString;
+  tagCategory?: TagCategory;
+  date?: string;
+  excerpt?: LocalizedString;
   content?: LocalizedString;
   coverImageUrl?: string;
-  gradient: string;
-  iconName: string;
-  featured: boolean;
-  order: number;
-  seoTitle: string;
-  seoDescription: string;
-  seoKeywords: string;
-  ogImage: string;
-  videoUrl: string;
-  link: string;
+  gradient?: string;
+  iconName?: string;
+  featured?: boolean;
+  order?: number;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string;
+  ogImage?: string;
+  videoUrl?: string;
+  link?: string;
 }
 
 export const workSchema = z.object({

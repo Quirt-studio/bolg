@@ -18,7 +18,7 @@ export default function NewWorkPage() {
     try {
       // Determine category_id from tagCategory
       let category_id: number | null = null;
-      const catId = parseInt(data.tagCategory);
+      const catId = parseInt(data.tagCategory || "");
       if (!isNaN(catId)) {
         category_id = catId;
       }
@@ -40,12 +40,12 @@ export default function NewWorkPage() {
         link: data.link || "",
         translations: {
           en: {
-            title: data.title.en || "Untitled",
+            title: data.title?.en || "Untitled",
             excerpt: data.excerpt?.en || "",
             content: data.content?.en || "",
           },
           zh: {
-            title: data.title.zh || "未命名",
+            title: data.title?.zh || "未命名",
             excerpt: data.excerpt?.zh || "",
             content: data.content?.zh || "",
           },

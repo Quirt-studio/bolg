@@ -71,10 +71,10 @@ export function WorkForm({ initialData, onSubmit, t, disabled }: WorkFormProps) 
           <Card>
             <CardHeader><CardTitle className="text-base">{t("works.form.content")}</CardTitle></CardHeader>
             <CardContent className="space-y-4">
-              <LocalizedStringInput label={t("works.form.title")} valueEn={form.watch("title.en")} valueZh={form.watch("title.zh")}
+              <LocalizedStringInput label={t("works.form.title")} valueEn={form.watch("title.en") || ""} valueZh={form.watch("title.zh") || ""}
                 onChangeEn={(v) => form.setValue("title.en", v)} onChangeZh={(v) => form.setValue("title.zh", v)} />
               {form.formState.errors.title && <p className="text-sm text-destructive">Title is required in both languages</p>}
-              <LocalizedStringInput label={t("works.form.excerpt")} valueEn={form.watch("excerpt.en")} valueZh={form.watch("excerpt.zh")}
+              <LocalizedStringInput label={t("works.form.excerpt")} valueEn={form.watch("excerpt.en") || ""} valueZh={form.watch("excerpt.zh") || ""}
                 onChangeEn={(v) => form.setValue("excerpt.en", v)} onChangeZh={(v) => form.setValue("excerpt.zh", v)} multiline />
               {form.formState.errors.excerpt && <p className="text-sm text-destructive">Excerpt is required in both languages</p>}
             </CardContent>
@@ -108,8 +108,8 @@ export function WorkForm({ initialData, onSubmit, t, disabled }: WorkFormProps) 
                 onChange={(url) => form.setValue("coverImageUrl", url)}
                 disabled={disabled}
               />
-              <GradientPicker value={form.watch("gradient")} onChange={(v) => form.setValue("gradient", v)} />
-              <IconPicker value={form.watch("iconName")} onChange={(v) => form.setValue("iconName", v)} />
+              <GradientPicker value={form.watch("gradient") || ""} onChange={(v) => form.setValue("gradient", v)} />
+              <IconPicker value={form.watch("iconName") || ""} onChange={(v) => form.setValue("iconName", v)} />
               <div className="space-y-2">
                 <Label>{t("works.form.videoUrl")}</Label>
                 <Input value={form.watch("videoUrl")} onChange={(e) => form.setValue("videoUrl", e.target.value)} placeholder={t("works.form.videoUrl")} disabled={disabled} />
@@ -153,7 +153,7 @@ export function WorkForm({ initialData, onSubmit, t, disabled }: WorkFormProps) 
           <Card>
             <CardHeader><CardTitle className="text-base">{t("works.form.settings")}</CardTitle></CardHeader>
             <CardContent className="space-y-4">
-              <LocalizedStringInput label={t("works.form.tag")} valueEn={form.watch("tag.en")} valueZh={form.watch("tag.zh")}
+              <LocalizedStringInput label={t("works.form.tag")} valueEn={form.watch("tag.en") || ""} valueZh={form.watch("tag.zh") || ""}
                 onChangeEn={(v) => form.setValue("tag.en", v)} onChangeZh={(v) => form.setValue("tag.zh", v)} />
               {form.formState.errors.tag && <p className="text-sm text-destructive">Tag is required in both languages</p>}
               <div className="space-y-2">

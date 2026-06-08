@@ -21,6 +21,11 @@ bolg-api/uploads/categories/*
 .DS_Store
 Thumbs.db
 
+# Docker
+.env
+uploads_data/
+
 # IDE
 .vscode/
 .idea/
+bolg-api-linux

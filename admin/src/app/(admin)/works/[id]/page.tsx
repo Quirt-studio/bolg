@@ -40,7 +40,7 @@ export default function EditWorkPage({ params }: { params: Promise<{ id: string 
     try {
       // Determine category_id from tagCategory
       let category_id: number | null = null;
-      const catId = parseInt(data.tagCategory);
+      const catId = parseInt(data.tagCategory || "");
       if (!isNaN(catId)) {
         category_id = catId;
       }
@@ -60,13 +60,13 @@ export default function EditWorkPage({ params }: { params: Promise<{ id: string 
         link: data.link || "",
         translations: {
           en: {
-            title: data.title.en || "",
-            excerpt: data.excerpt.en || "",
+            title: data.title?.en || "",
+            excerpt: data.excerpt?.en || "",
             content: data.content?.en || "",
           },
           zh: {
-            title: data.title.zh || "",
-            excerpt: data.excerpt.zh || "",
+            title: data.title?.zh || "",
+            excerpt: data.excerpt?.zh || "",
             content: data.content?.zh || "",
           },
         },

@@ -22,6 +22,7 @@ export interface Work {
   translations: Record<string, WorkTranslation>;
   seo: { title: string; description: string; keywords: string; og_image: string };
   video_url: string;
+  link: string;
   created_at: string;
   updated_at: string;
 }
@@ -42,6 +43,7 @@ export interface WorkCreateInput {
   seo_keywords?: string;
   og_image?: string;
   video_url?: string;
+  link?: string;
 }
 
 export interface WorkUpdateInput extends Partial<WorkCreateInput> {}
