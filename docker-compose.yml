@@ -11,8 +11,6 @@
 #     Password: admin123
 # ============================================
 
-version: "3.8"
-
 services:
   # ---- MySQL 8.0 ----
   mysql:
