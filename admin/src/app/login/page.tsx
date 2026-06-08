@@ -26,7 +26,7 @@ export default function LoginPage() {
       if (res.code === 0 && res.data) {
         const { user, access_token, refresh_token } = res.data;
         setAuth(user, access_token, refresh_token);
-        router.push("/");
+        router.push("/works");
       } else {
         setError(res.message || "Login failed");
       }
