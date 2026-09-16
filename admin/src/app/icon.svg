@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="14" fill="#2C3E6B"/>
+  <!-- Serif "G", drawn as a stroked arc + bar so it renders identically
+       everywhere and never depends on a font being installed. -->
+  <path d="M 41 20
+           A 14 14 0 1 0 41 44
+           L 41 33
+           L 33 33"
+        fill="none"
+        stroke="#FAF9F7"
+        stroke-width="6.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+  <circle cx="47" cy="46" r="5.2" fill="#C4884E"/>
+</svg>

@@ -40,6 +40,23 @@ func Setup(mode string) *gin.Engine {
 		c.File(filepath.Join(projectRoot, "works.html"))
 	})
 
+	// Serve site favicon (SVG for modern browsers, ICO fallback, Apple touch icon)
+	r.GET("/favicon.svg", func(c *gin.Context) {
+		wd, _ := os.Getwd()
+		projectRoot := filepath.Dir(wd)
+		c.File(filepath.Join(projectRoot, "favicon.svg"))
+	})
+	r.GET("/favicon.ico", func(c *gin.Context) {
+		wd, _ := os.Getwd()
+		projectRoot := filepath.Dir(wd)
+		c.File(filepath.Join(projectRoot, "favicon.ico"))
+	})
+	r.GET("/apple-touch-icon.png", func(c *gin.Context) {
+		wd, _ := os.Getwd()
+		projectRoot := filepath.Dir(wd)
+		c.File(filepath.Join(projectRoot, "apple-touch-icon.png"))
+	})
+
 	// API v1
 	api := r.Group("/api/v1")
 	// Public routes
