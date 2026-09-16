@@ -40,20 +40,26 @@ func Setup(mode string) *gin.Engine {
 		c.File(filepath.Join(projectRoot, "works.html"))
 	})
 
-	// Serve site favicon (SVG for modern browsers, ICO fallback, Apple touch icon)
+	// Serve site favicon (SVG for modern browsers, ICO fallback, Apple touch icon).
+	// Content-Type is set explicitly: the minimal container image has no
+	// /etc/mime.types, so Go's extension-based sniffing falls back to
+	// text/plain for these, which some browsers refuse to use as an icon.
 	r.GET("/favicon.svg", func(c *gin.Context) {
 		wd, _ := os.Getwd()
 		projectRoot := filepath.Dir(wd)
+		c.Header("Content-Type", "image/svg+xml")
 		c.File(filepath.Join(projectRoot, "favicon.svg"))
 	})
 	r.GET("/favicon.ico", func(c *gin.Context) {
 		wd, _ := os.Getwd()
 		projectRoot := filepath.Dir(wd)
+		c.Header("Content-Type", "image/x-icon")
 		c.File(filepath.Join(projectRoot, "favicon.ico"))
 	})
 	r.GET("/apple-touch-icon.png", func(c *gin.Context) {
 		wd, _ := os.Getwd()
 		projectRoot := filepath.Dir(wd)
+		c.Header("Content-Type", "image/png")
 		c.File(filepath.Join(projectRoot, "apple-touch-icon.png"))
 	})
 
