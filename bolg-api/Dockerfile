@@ -32,6 +32,9 @@ RUN apk add --no-cache ca-certificates tzdata curl busybox-extras && \
 #   /app/
 #   ├── index.html          (served by Go)
 #   ├── works.html          (served by Go)
+#   ├── favicon.ico         (served by Go)
+#   ├── favicon.svg         (served by Go)
+#   ├── apple-touch-icon.png (served by Go)
 #   └── bolg-api/
 #       ├── bolg-api        (binary)
 #       ├── config/
@@ -47,8 +50,8 @@ COPY --from=builder /bolg-api ./
 COPY bolg-api/docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Copy static HTML files from project root
-COPY index.html works.html /app/
+# Copy static HTML files and favicon assets from project root
+COPY index.html works.html favicon.ico favicon.svg apple-touch-icon.png /app/
 
 # Create uploads and config directories
 RUN mkdir -p /app/bolg-api/config /app/bolg-api/uploads

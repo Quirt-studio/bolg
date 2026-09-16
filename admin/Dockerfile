@@ -47,8 +47,13 @@ COPY --from=builder /src/.next ./.next/
 USER app
 
 EXPOSE 3000
+# NOTE: with basePath="/admin" set, we'd expect the server to require that
+# prefix on direct requests -- but verified against the running container,
+# it's the opposite: bare /login returns 200, /admin/login 404s. Root cause
+# not confirmed (possibly a Next 16 standalone-mode basePath quirk); using
+# the path that's actually verified to work.
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-    CMD curl -f http://localhost:3000/admin/login || exit 1
+    CMD curl -f http://localhost:3000/login || exit 1
 
 ENV NODE_ENV=production
 ENV PORT=3000
