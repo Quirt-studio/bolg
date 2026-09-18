@@ -2849,39 +2849,62 @@
     function closeSearch() {
       searchOverlay.classList.remove('open');
       searchInput.value = '';
+      if (searchFetchAbort) searchFetchAbort.abort();
+      clearTimeout(searchDebounceTimer);
       if (searchResults) searchResults.innerHTML = '';
     }
 
+    var searchDebounceTimer = null;
+    var searchFetchAbort = null;
+
     function performSearch(query) {
-      if (!searchResults || !allWorks.length) return;
-      if (!query || query.length < 2) {
+      if (!searchResults) return;
+      if (searchFetchAbort) searchFetchAbort.abort();
+      var q = query.trim();
+      if (!q || q.length < 2) {
         searchResults.innerHTML = '';
         return;
       }
-      var q = query.toLowerCase();
-      var matches = allWorks.filter(function(w) {
-        return (w.title && w.title.toLowerCase().indexOf(q) !== -1) ||
-               (w.excerpt && w.excerpt.toLowerCase().indexOf(q) !== -1) ||
-               (w.category && w.category.name && w.category.name.toLowerCase().indexOf(q) !== -1);
-      });
-      if (matches.length === 0) {
-        searchResults.innerHTML = '<p style="color: var(--color-text-tertiary); padding: 8px 0; font-size: 0.85rem;">No results found.</p>';
-        return;
-      }
-      searchResults.innerHTML = matches.map(function(w) {
-        return '<div style="padding: 8px 0; border-bottom: 1px solid var(--color-border); cursor: pointer;">' +
-          '<div style="font-size: 0.9rem; font-weight: 500; color: var(--color-text-primary);">' + escapeHtml(w.title) + '</div>' +
-          '<div style="font-size: 0.75rem; color: var(--color-text-tertiary); margin-top: 2px;">' + (w.category ? escapeHtml(w.category.name) : '') + '</div>' +
-        '</div>';
-      }).join('');
+      searchResults.innerHTML = '<p style="color: var(--color-text-tertiary); padding: 8px 0; font-size: 0.85rem;">' + (currentLang === 'zh' ? '搜索中…' : 'Searching…') + '</p>';
+      searchFetchAbort = new AbortController();
+      fetch(API_BASE + '/public/search?q=' + encodeURIComponent(q) + '&lang=' + currentLang, { signal: searchFetchAbort.signal })
+        .then(function(res) { return res.json(); })
+        .then(function(json) {
+          if (json.code !== 0) throw new Error(json.message);
+          var items = (json.data && json.data.items) || [];
+          if (items.length === 0) {
+            searchResults.innerHTML = '<p style="color: var(--color-text-tertiary); padding: 8px 0; font-size: 0.85rem;">No results found.</p>';
+            return;
+          }
+          searchResults.innerHTML = items.map(function(item) {
+            return '<div class="search-result-item" data-type="' + item.type + '" data-slug="' + escapeAttr(item.slug) + '" style="padding: 8px 0; border-bottom: 1px solid var(--color-border); cursor: pointer;">' +
+              '<div style="font-size: 0.9rem; font-weight: 500; color: var(--color-text-primary);">' + escapeHtml(item.title) + '</div>' +
+              '<div style="font-size: 0.75rem; color: var(--color-text-tertiary); margin-top: 2px;">' + escapeHtml(item.excerpt || '') + '</div>' +
+            '</div>';
+          }).join('');
+        })
+        .catch(function(err) {
+          if (err.name === 'AbortError') return;
+          searchResults.innerHTML = '<p style="color: var(--color-text-tertiary); padding: 8px 0; font-size: 0.85rem;">' + (currentLang === 'zh' ? '搜索失败' : 'Search failed.') + '</p>';
+        });
     }
 
     searchInput.addEventListener('input', function() {
-      performSearch(searchInput.value);
+      var value = searchInput.value;
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(function() { performSearch(value); }, 300);
     });
 
     searchBtn.addEventListener('click', openSearch);
-    searchOverlay.addEventListener('click', (e) => {
+    searchOverlay.addEventListener('click', function(e) {
+      var resultItem = e.target.closest('.search-result-item');
+      if (resultItem) {
+        var slug = resultItem.getAttribute('data-slug');
+        var type = resultItem.getAttribute('data-type');
+        closeSearch();
+        if (type === 'post') { openPost(slug); } else { openWork(slug); }
+        return;
+      }
       if (e.target === searchOverlay) closeSearch();
     });
 
