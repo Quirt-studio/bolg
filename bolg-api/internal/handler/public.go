@@ -639,9 +639,9 @@ func (h *PublicHandler) Search(c *gin.Context) {
 
 	if searchType == "all" || searchType == "works" {
 		var works []model.Work
-		database.DB.Model(&model.Work{}).Where("status = ?", "published").
+		database.DB.Model(&model.Work{}).Distinct().Where("status = ?", "published").
 			Joins("JOIN work_translations wt ON wt.work_id = works.id").
-			Where("wt.title LIKE ? OR wt.excerpt LIKE ?", likeQ, likeQ).
+			Where("wt.title LIKE ? OR wt.excerpt LIKE ? OR works.seo_title LIKE ? OR works.seo_keywords LIKE ?", likeQ, likeQ, likeQ, likeQ).
 			Preload("Translations").Order("published_at DESC").Find(&works)
 		for _, w := range works {
 			title, excerpt := "", ""
@@ -658,9 +658,9 @@ func (h *PublicHandler) Search(c *gin.Context) {
 
 	if searchType == "all" || searchType == "posts" {
 		var posts []model.Post
-		database.DB.Model(&model.Post{}).Where("status = ?", "published").
+		database.DB.Model(&model.Post{}).Distinct().Where("status = ?", "published").
 			Joins("JOIN post_translations pt ON pt.post_id = posts.id").
-			Where("pt.title LIKE ? OR pt.excerpt LIKE ?", likeQ, likeQ).
+			Where("pt.title LIKE ? OR pt.excerpt LIKE ? OR posts.seo_title LIKE ? OR posts.seo_keywords LIKE ?", likeQ, likeQ, likeQ, likeQ).
 			Preload("Translations").Order("published_at DESC").Find(&posts)
 		for _, p := range posts {
 			title, excerpt := "", ""

@@ -53,9 +53,9 @@ func (h *SearchHandler) Search(c *gin.Context) {
 	// Search works
 	if searchType == "all" || searchType == "works" {
 		var works []model.Work
-		query := database.DB.Model(&model.Work{}).
+		query := database.DB.Model(&model.Work{}).Distinct().
 			Joins("JOIN work_translations wt ON wt.work_id = works.id").
-			Where("wt.title LIKE ? OR wt.excerpt LIKE ?", likeQ, likeQ).
+			Where("wt.title LIKE ? OR wt.excerpt LIKE ? OR works.seo_title LIKE ? OR works.seo_keywords LIKE ?", likeQ, likeQ, likeQ, likeQ).
 			Preload("Translations")
 
 		var worksTotal int64
@@ -98,9 +98,9 @@ func (h *SearchHandler) Search(c *gin.Context) {
 	// Search posts
 	if searchType == "all" || searchType == "posts" {
 		var posts []model.Post
-		query := database.DB.Model(&model.Post{}).
+		query := database.DB.Model(&model.Post{}).Distinct().
 			Joins("JOIN post_translations pt ON pt.post_id = posts.id").
-			Where("pt.title LIKE ? OR pt.excerpt LIKE ?", likeQ, likeQ).
+			Where("pt.title LIKE ? OR pt.excerpt LIKE ? OR posts.seo_title LIKE ? OR posts.seo_keywords LIKE ?", likeQ, likeQ, likeQ, likeQ).
 			Preload("Translations")
 
 		var postsTotal int64
